@@ -77,8 +77,8 @@ class App extends Component {
     e.preventDefault()
     if(this.state.dbank!=='undefined'){
       try{
-        const collateralEther = await this.state.dbank.methods.collateralEther(this.state.account).call({from: this.state.account})
-        const tokenBorrowed = collateralEther/2
+        const collateralGather = await this.state.dbank.methods.collateralEther(this.state.account).call({from: this.state.account})
+        const tokenBorrowed = collateralGather/2
         await this.state.token.methods.approve(this.state.dBankAddress, tokenBorrowed.toString()).send({from: this.state.account})
         await this.state.dbank.methods.payOff().send({from: this.state.account})
       } catch(e) {
@@ -127,7 +127,7 @@ class App extends Component {
                   <br></br>
                     How much do you want to deposit?
                     <br></br>
-                    (min. amount is 0.01 ETH)
+                    (min. amount is 0.0001 GTH)
                     <br></br>
                     (1 deposit is possible at the time)
                     <br></br>
@@ -170,7 +170,7 @@ class App extends Component {
                     <br></br>
                     (You'll get 50% of collateral, in Tokens)
                     <br></br>
-                    Type collateral amount (in ETH)
+                    Type collateral amount (in GTH)
                     <br></br>
                     <br></br>
                     <form onSubmit={(e) => {

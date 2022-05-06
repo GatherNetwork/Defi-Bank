@@ -8,7 +8,7 @@ contract Token is ERC20 {
 
   event MinterChanged(address indexed from, address to);
 
-  constructor()  payable ERC20("Decentralized Bank Currency", "DBC") {
+  constructor()  payable ERC20("Defi Bank Currency", "DBC") {
     minter = msg.sender; //only initially
   }
 

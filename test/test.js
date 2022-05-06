@@ -11,7 +11,7 @@ require('chai')
 
 contract('dBank', ([deployer, user]) => {
   let dbank, token
-  const interestPerSecond = 31668017 //(10% APY) for min. deposit (0.01 ETH)
+  const interestPerSecond = 31668017 //(10% APY) for min. deposit (0.0001 GTH)
 
   beforeEach(async () => {
     token = await Token.new()
@@ -54,7 +54,7 @@ contract('dBank', ([deployer, user]) => {
 
     describe('success', () => {
       beforeEach(async () => {
-        await dbank.deposit({value: 10**16, from: user}) //0.01 ETH
+        await dbank.deposit({value: 10**14, from: user}) //0.0001 GTH
       })
 
       it('balance should increase', async () => {
@@ -72,7 +72,7 @@ contract('dBank', ([deployer, user]) => {
 
     describe('failure', () => {
       it('depositing should be rejected', async () => {
-        await dbank.deposit({value: 10**15, from: user}).should.be.rejectedWith(EVM_REVERT) //to small amount
+        await dbank.deposit({value: 10**13, from: user}).should.be.rejectedWith(EVM_REVERT) //to small amount
       })
     })
   })
@@ -83,7 +83,7 @@ contract('dBank', ([deployer, user]) => {
     describe('success', () => {
 
       beforeEach(async () => {
-        await dbank.deposit({value: 10**16, from: user}) //0.01 ETH
+        await dbank.deposit({value: 10**14, from: user}) //0.0001 ETH
 
         await wait(2) //accruing interest
 
@@ -117,7 +117,7 @@ contract('dBank', ([deployer, user]) => {
 
     describe('failure', () => {
       it('withdrawing should be rejected', async () =>{
-        await dbank.deposit({value: 10**16, from: user}) //0.01 ETH
+        await dbank.deposit({value: 10**14, from: user}) //0.0001 GTH
         await wait(2) //accruing interest
         await dbank.withdraw({from: deployer}).should.be.rejectedWith(EVM_REVERT) //wrong user
       })
@@ -128,19 +128,19 @@ contract('dBank', ([deployer, user]) => {
 
     describe('success', () => {
       beforeEach(async () => {
-        await dbank.borrow({value: 10**16, from: user}) //0.01 ETH
+        await dbank.borrow({value: 10**14, from: user}) //0.0001 GTH
       })
 
       it('token total supply should increase', async () => {
-        expect(Number(await token.totalSupply())).to.eq(5*(10**15)) //10**16/2
+        expect(Number(await token.totalSupply())).to.eq(5*(10**13)) //10**16/2
       })
 
       it('balance of user should increase', async () => {
-        expect(Number(await token.balanceOf(user))).to.eq(5*(10**15)) //10**16/2
+        expect(Number(await token.balanceOf(user))).to.eq(5*(10**13)) //10**16/2
       })
 
       it('collateralEther should increase', async () => {
-        expect(Number(await dbank.collateralEther(user))).to.eq(10**16) //0.01 ETH
+        expect(Number(await dbank.collateralEther(user))).to.eq(10**14) //0.0001 GTH
       })
 
       it('user isBorrowed status should eq true', async () => {
@@ -150,7 +150,7 @@ contract('dBank', ([deployer, user]) => {
 
     describe('failure', () => {
       it('borrowing should be rejected', async () => {
-        await dbank.borrow({value: 10**15, from: user}).should.be.rejectedWith(EVM_REVERT) //to small amount
+        await dbank.borrow({value: 10**13, from: user}).should.be.rejectedWith(EVM_REVERT) //to small amount
       })
     })
   })
@@ -159,8 +159,8 @@ contract('dBank', ([deployer, user]) => {
 
     describe('success', () => {
       beforeEach(async () => {
-        await dbank.borrow({value: 10**16, from: user}) //0.01 ETH
-        await token.approve(dbank.address, (5*(10**15)).toString(), {from: user})
+        await dbank.borrow({value: 10**14, from: user}) //0.0001 GTH
+        await token.approve(dbank.address, (5*(10**13)).toString(), {from: user})
         await dbank.payOff({from: user})
       })
 
@@ -169,7 +169,7 @@ contract('dBank', ([deployer, user]) => {
       })
 
       it('dBank eth balance should get fee', async () => {
-        expect(Number(await web3.eth.getBalance(dbank.address))).to.eq(10**15) //10% of 0.01 ETH
+        expect(Number(await web3.eth.getBalance(dbank.address))).to.eq(10**13) //10% of 0.0001 GTH
       })
 
       it('borrower data should be reseted', async () => {
@@ -180,8 +180,8 @@ contract('dBank', ([deployer, user]) => {
 
     describe('failure', () => {
       it('paying off should be rejected', async () =>{
-        await dbank.borrow({value: 10**16, from: user}) //0.01 ETH
-        await token.approve(dbank.address, (5*(10**15)).toString(), {from: user})
+        await dbank.borrow({value: 10**14, from: user}) //0.0001 GTH
+        await token.approve(dbank.address, (5*(10**13)).toString(), {from: user})
         await dbank.payOff({from: deployer}).should.be.rejectedWith(EVM_REVERT) //wrong user
       })
     })

@@ -25,7 +25,7 @@ contract dBank {
 
   function deposit() payable public {
     require(isDeposited[msg.sender] == false, 'Error, deposit already active');
-    require(msg.value>=1e16, 'Error, deposit must be >= 0.01 ETH');
+    require(msg.value>=1e14, 'Error, deposit must be >= 0.0001 GTH');
 
     etherBalanceOf[msg.sender] = etherBalanceOf[msg.sender] + msg.value;
     depositStart[msg.sender] = depositStart[msg.sender] + block.timestamp;
@@ -41,11 +41,11 @@ contract dBank {
     //check user's hodl time
     uint depositTime = block.timestamp - depositStart[msg.sender];
 
-    //31668017 - interest(10% APY) per second for min. deposit amount (0.01 ETH), cuz:
-    //1e15(10% of 0.01 ETH) / 31577600 (seconds in 365.25 days)
+    //31668017 - interest(10% APY) per second for min. deposit amount (0.0001 GTH), cuz:
+    //1e13(10% of 0.0001 ETH) / 31577600 (seconds in 365.25 days)
 
     //(etherBalanceOf[msg.sender] / 1e16) - calc. how much higher interest will be (based on deposit), e.g.:
-    //for min. deposit (0.01 ETH), (etherBalanceOf[msg.sender] / 1e16) = 1 (the same, 31668017/s)
+    //for min. deposit (0.0001 ETH), (etherBalanceOf[msg.sender] / 1e16) = 1 (the same, 31668017/s)
     //for deposit 0.02 ETH, (etherBalanceOf[msg.sender] / 1e16) = 2 (doubled, (2*31668017)/s)
     uint interestPerSecond = 31668017 * (etherBalanceOf[msg.sender] / 1e16);
     uint interest = interestPerSecond * depositTime;
@@ -63,7 +63,7 @@ contract dBank {
   }
 
   function borrow() payable public {
-    require(msg.value>=1e16, 'Error, collateral must be >= 0.01 ETH');
+    require(msg.value>=1e14, 'Error, collateral must be >= 0.0001 GTH');
     require(isBorrowed[msg.sender] == false, 'Error, loan already taken');
 
     //this Ether will be locked till user payOff the loan
