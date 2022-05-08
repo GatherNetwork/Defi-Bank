@@ -141,7 +141,7 @@ class App extends Component {
                       <br></br>
                         <input
                           id='depositAmount'
-                          step="0.01"
+                          step="0.0001"
                           type='number'
                           ref={(input) => { this.depositAmount = input }}
                           className="form-control form-control-md"
@@ -183,7 +183,7 @@ class App extends Component {
                       <div className='form-group mr-sm-2'>
                         <input
                           id='borrowAmount'
-                          step="0.01"
+                          step="0.0001"
                           type='number'
                           ref={(input) => { this.borrowAmount = input }}
                           className="form-control form-control-md"
